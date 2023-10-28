@@ -17,8 +17,9 @@ import sys
 # Init pygame
 try:
     pygame.init()
+    pygame.mixer.init()
 except Exception as exc:
-    print(f"Couldn't initialize pygame. Continuing without it. Err: {exc}")
+    print(f"Couldn't initialize pygame and pygame.mixer. Continuing without it. Err: {exc}")
 
 WIDTH = 600
 HEIGHT = 400
@@ -28,6 +29,7 @@ root = pygame.display.set_mode((600, 400), pygame.DOUBLEBUF | pygame.SCALED | py
 pygame.display.set_caption("Lockdown. (by TheSpikyHedgehog)")
 pygame.display.set_icon(pygame.image.load("assets/images/logo.png").convert())
 pygame.display.set_icon(pygame.image.load("assets/images/logo.png").convert())
+
 sprites = []
 
 offsetx = -12
