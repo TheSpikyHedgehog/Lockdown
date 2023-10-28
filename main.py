@@ -97,7 +97,7 @@ class Inventory(pygame.sprite.Sprite):
         for index in range(4):
             self.slots[index] = None
         self.active_slot = 0 
-    
+
     def draw(self):
         pygame.draw.rect(root, "gray", pygame.Rect(240,350,160,40))
         xoffset = 10
