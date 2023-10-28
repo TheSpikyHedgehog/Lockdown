@@ -159,6 +159,9 @@ lvl = [
 ]
 
 class Wall(pygame.sprite.Sprite):
+    '''
+    Wall class
+    '''
     def __init__(self, pos):
         super().__init__()
         self.image = textures[WALL]
