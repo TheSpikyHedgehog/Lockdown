@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
                 for wall in walls:
                     if self.rect.colliderect(wall.rect):
                         if self.rect.left < wall.rect.right:
-                            offsetx += self.vel + 2
+                            offsetx += self.vel + 1
 
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 offsetx += self.vel
@@ -69,7 +69,7 @@ class Player(pygame.sprite.Sprite):
                 for wall in walls:
                     if self.rect.colliderect(wall.rect):
                         if self.rect.right > wall.rect.left:
-                            offsetx -= self.vel
+                            offsetx -= self.vel + 1
 
         if keys[pygame.K_UP] or keys[pygame.K_w]:
                 offsety -= self.vel
@@ -77,7 +77,7 @@ class Player(pygame.sprite.Sprite):
                 for wall in walls:
                     if self.rect.colliderect(wall.rect):
                         if self.rect.top < wall.rect.bottom:
-                            offsety += self.vel + 2
+                            offsety += self.vel + 1
         
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
                 offsety += self.vel
@@ -85,7 +85,7 @@ class Player(pygame.sprite.Sprite):
                 for wall in walls:
                     if self.rect.colliderect(wall.rect):
                         if self.rect.bottom > wall.rect.top:
-                            offsety -= self.vel + 2
+                            offsety -= self.vel + 1
         self.rect.x = WIDTH / 2
         self.rect.y = HEIGHT / 2
 
@@ -129,10 +129,10 @@ textures = {
 
 # Var "lvl" holds level data and map details.
 lvl = [
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, FLOOR, FLOOR, WALL, WALL, WALL, WALL],
+    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
+    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR],
+    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR],
+    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, FLOOR, FLOOR, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL],
