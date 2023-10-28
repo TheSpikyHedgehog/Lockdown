@@ -27,6 +27,7 @@ keys = []
 root = pygame.display.set_mode((600, 400), pygame.DOUBLEBUF | pygame.SCALED | pygame.RESIZABLE)
 pygame.display.set_caption("Lockdown. (by TheSpikyHedgehog)")
 pygame.display.set_icon(pygame.image.load("assets/images/logo.png").convert())
+pygame.display.set_icon(pygame.image.load("assets/images/logo.png").convert())
 sprites = []
 
 offsetx = -12
@@ -47,6 +48,7 @@ class Player(pygame.sprite.Sprite):
         self.image = self.images[0]
         self.rect = self.image.get_rect(center=(self.x, self.y))
         self.vel = 0.5
+        self.cur_vel = self.vel
 
     def draw(self):
         root.blit(self.image, self.rect)
@@ -62,6 +64,7 @@ class Player(pygame.sprite.Sprite):
                     if self.rect.colliderect(wall.rect):
                         if self.rect.left < wall.rect.right:
                             offsetx += self.vel + 1
+                            self.vel = 0
 
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 offsetx += self.vel
@@ -70,7 +73,7 @@ class Player(pygame.sprite.Sprite):
                     if self.rect.colliderect(wall.rect):
                         if self.rect.right > wall.rect.left:
                             offsetx -= self.vel + 1
-
+                            self.vel = 0
         if keys[pygame.K_UP] or keys[pygame.K_w]:
                 offsety -= self.vel
                 self.image = self.images[1]
@@ -78,6 +81,7 @@ class Player(pygame.sprite.Sprite):
                     if self.rect.colliderect(wall.rect):
                         if self.rect.top < wall.rect.bottom:
                             offsety += self.vel + 1
+                            self.vel = 0
         
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
                 offsety += self.vel
@@ -86,6 +90,9 @@ class Player(pygame.sprite.Sprite):
                     if self.rect.colliderect(wall.rect):
                         if self.rect.bottom > wall.rect.top:
                             offsety -= self.vel + 1
+                            self.vel = 0
+
+        self.vel = self.cur_vel
         self.rect.x = WIDTH / 2
         self.rect.y = HEIGHT / 2
 
