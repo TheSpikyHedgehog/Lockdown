@@ -17,9 +17,8 @@ import sys
 # Init pygame
 try:
     pygame.init()
-    pygame.mixer.init()
 except Exception as exc:
-    print(f"Couldn't initialize pygame and pygame.mixer. Continuing without it. Err: {exc}")
+    print(f"Couldn't initialize pygame. Continuing without it. Err: {exc}")
 
 WIDTH = 600
 HEIGHT = 400
@@ -29,7 +28,6 @@ root = pygame.display.set_mode((600, 400), pygame.DOUBLEBUF | pygame.SCALED | py
 pygame.display.set_caption("Lockdown. (by TheSpikyHedgehog)")
 pygame.display.set_icon(pygame.image.load("assets/images/logo.png").convert())
 pygame.display.set_icon(pygame.image.load("assets/images/logo.png").convert())
-
 sprites = []
 
 offsetx = -12
@@ -40,7 +38,6 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.x = x
         self.y = y
-        self.health = 20
         # Image and rect not included for now.
         self.images = [
             pygame.image.load("assets/images/player_down.png").convert_alpha(),
@@ -51,7 +48,6 @@ class Player(pygame.sprite.Sprite):
         self.image = self.images[0]
         self.rect = self.image.get_rect(center=(self.x, self.y))
         self.vel = 0.5
-        self.cur_vel = self.vel
 
     def draw(self):
         root.blit(self.image, self.rect)
@@ -66,8 +62,7 @@ class Player(pygame.sprite.Sprite):
                 for wall in walls:
                     if self.rect.colliderect(wall.rect):
                         if self.rect.left < wall.rect.right:
-                            offsetx += self.vel + 1
-                            self.vel = 0
+                            offsetx += self.vel + 2
 
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 offsetx += self.vel
@@ -75,16 +70,15 @@ class Player(pygame.sprite.Sprite):
                 for wall in walls:
                     if self.rect.colliderect(wall.rect):
                         if self.rect.right > wall.rect.left:
-                            offsetx -= self.vel + 1
-                            self.vel = 0
+                            offsetx -= self.vel + 2
+
         if keys[pygame.K_UP] or keys[pygame.K_w]:
                 offsety -= self.vel
                 self.image = self.images[1]
                 for wall in walls:
                     if self.rect.colliderect(wall.rect):
                         if self.rect.top < wall.rect.bottom:
-                            offsety += self.vel + 1
-                            self.vel = 0
+                            offsety += self.vel + 2
         
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
                 offsety += self.vel
@@ -92,10 +86,7 @@ class Player(pygame.sprite.Sprite):
                 for wall in walls:
                     if self.rect.colliderect(wall.rect):
                         if self.rect.bottom > wall.rect.top:
-                            offsety -= self.vel + 1
-                            self.vel = 0
-
-        self.vel = self.cur_vel
+                            offsety -= self.vel + 2
         self.rect.x = WIDTH / 2
         self.rect.y = HEIGHT / 2
 
@@ -107,7 +98,7 @@ class Inventory(pygame.sprite.Sprite):
         for index in range(4):
             self.slots[index] = None
         self.active_slot = 0 
-
+    
     def draw(self):
         pygame.draw.rect(root, "gray", pygame.Rect(240,350,160,40))
         xoffset = 10
@@ -137,12 +128,11 @@ textures = {
 	EMPTY : None
 }
 
-# Var "lvl" holds level data and map details.
 lvl = [
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, FLOOR, FLOOR, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
+    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
+    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR],
+    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR],
+    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, FLOOR, FLOOR, WALL, WALL, WALL, WALL],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL],
@@ -153,9 +143,9 @@ lvl = [
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, WALL],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, WALL, WALL, WALL, FLOOR, FLOOR, WALL, WALL, WALL, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, WALL, FLOOR, FLOOR, WALL, WALL, WALL],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, WALL, WALL],
+    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, KEY, FLOOR, FLOOR, FLOOR, WALL],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, WALL],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, KEY, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, WALL],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, WALL, WALL, WALL, WALL],
+    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, FLOOR, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
     [],
@@ -169,9 +159,6 @@ lvl = [
 ]
 
 class Wall(pygame.sprite.Sprite):
-    '''
-    Wall class
-    '''
     def __init__(self, pos):
         super().__init__()
         self.image = textures[WALL]
@@ -208,6 +195,10 @@ class Key(pygame.sprite.Sprite):
             else:
                 continue
 
+class Door(pygame.sprite.Sprite):
+    def __init__(self):
+        self.image = pygame.image.load("assets/images/door_closed.png").convert()
+        self.rect = self.image.get_rect()
 
 def load_others():
     global walls, keys
